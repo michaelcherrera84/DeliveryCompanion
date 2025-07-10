@@ -10,10 +10,12 @@ import SwiftData
 
 @Model
 class ServicePayment {
+    var delivery: Delivery?
     var amount: Decimal = 0
     var service: Service?
     
-    init(amount: Decimal, service: Service? = nil) {
+    init(delivery: Delivery? = nil, amount: Decimal, service: Service? = nil) {
+        self.delivery = delivery
         self.amount = amount
         self.service = service
     }

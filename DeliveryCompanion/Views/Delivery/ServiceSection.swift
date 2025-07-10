@@ -10,8 +10,7 @@ import SwiftUI
 
 struct ServiceSection: View {
     @Environment(\.modelContext) private var modelContext
-    @Binding var service: Service?
-    @Binding var servicePayment: ServicePayment?
+    @Bindable var delivery: Delivery
     @State private var paymentString: String = ""
     @State private var isInvalidInput: Bool = false
 
@@ -19,7 +18,7 @@ struct ServiceSection: View {
 
     var body: some View {
         Section("Service") {
-            Picker("Select a service", selection: $service) {
+            Picker("Select a service", selection: $delivery.service) {
                 Text("")
                     .tag(Optional<Service>.none)
 
@@ -39,12 +38,12 @@ struct ServiceSection: View {
 
                 CurrencyInput(
                     amount: Binding(
-                        get: { servicePayment?.amount ?? 0.00 },
+                        get: { delivery.servicePayment?.amount ?? 0.00 },
                         set: { newAmount in
-                            if servicePayment == nil {
-                                servicePayment = ServicePayment(amount: newAmount)
+                            if delivery.servicePayment == nil {
+                                delivery.servicePayment = ServicePayment(amount: newAmount)
                             } else {
-                                servicePayment?.amount = newAmount
+                                delivery.servicePayment?.amount = newAmount
                             }
                         }
                     )
@@ -61,8 +60,7 @@ struct ServiceSection: View {
 
         return Form {
             ServiceSection(
-                service: .constant(previewer.service),
-                servicePayment: .constant(previewer.servicePayment)
+                delivery: previewer.delivery
             )
         }
         .modelContainer(previewer.modelContainer)

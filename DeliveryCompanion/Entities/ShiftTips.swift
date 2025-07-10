@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 class ShiftTips {
+    var shift: Shift?
     var amount: Decimal = 0
     var tiptype: TipType?
     var service: Service?
@@ -19,7 +20,8 @@ class ShiftTips {
         case card
     }
     
-    init(amount: Decimal, tiptype: TipType? = nil, service: Service? = nil) {
+    init(shift: Shift? = nil, amount: Decimal, tiptype: TipType? = nil, service: Service? = nil) {
+        self.shift = shift
         self.amount = amount
         self.tiptype = tiptype
         self.service = service

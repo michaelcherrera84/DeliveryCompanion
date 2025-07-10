@@ -12,10 +12,10 @@ import SwiftData
 class Service {
     var name: String = ""
     @Attribute(.externalStorage) var logo: Data?
-    var phoneNumber: String?
-    var email: String?
+    var phoneNumber: String = ""
+    var email: String = ""
     
-    init(name: String, logo: Data? = nil, phoneNumber: String? = nil, email: String? = nil) {
+    init(name: String, logo: Data? = nil, phoneNumber: String, email: String) {
         self.name = name
         self.logo = logo
         self.phoneNumber = phoneNumber

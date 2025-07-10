@@ -10,7 +10,6 @@ import SwiftData
 import SwiftUI
 
 struct AddEditService: View {
-    @Environment(\.modelContext) var modelContext
     @Binding var navigationPath: NavigationPath
     @Bindable var service: Service
     @State private var showPhotoPicker = false
@@ -39,27 +38,15 @@ struct AddEditService: View {
                     TextField("Name", text: $service.name)
                         .textContentType(.name)
 
-                    TextField(
-                        "Phone (optional)",
-                        text: Binding(
-                            get: { service.phoneNumber ?? "" },
-                            set: { service.phoneNumber = $0.isEmpty ? nil : $0 }
-                        )
-                    )
-                    .textContentType(.telephoneNumber)
-                    .keyboardType(.phonePad)
+                    TextField("Phone (optional)", text: $service.phoneNumber)
+                        .textContentType(.telephoneNumber)
+                        .keyboardType(.phonePad)
 
-                    TextField(
-                        "Email (optional)",
-                        text: Binding(
-                            get: { service.email ?? "" },
-                            set: { service.email = $0.isEmpty ? nil : $0 }
-                        )
-                    )
-                    .textContentType(.emailAddress)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
-                    .keyboardType(.emailAddress)
+                    TextField("Email (optional)", text: $service.email)
+                        .textContentType(.emailAddress)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .keyboardType(.emailAddress)
                 }
                 .padding(10)
 
@@ -100,12 +87,12 @@ struct AddEditService: View {
 #Preview {
     do {
         let previewer = try Previewer()
-        
+
         return AddEditService(
             navigationPath: .constant(NavigationPath()),
             service: previewer.service
         )
-            .modelContainer(previewer.modelContainer)
+        .modelContainer(previewer.modelContainer)
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

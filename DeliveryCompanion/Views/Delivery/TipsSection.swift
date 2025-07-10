@@ -9,15 +9,15 @@ import SwiftUI
 
 struct TipsSection: View {
     @Environment(\.modelContext) private var modelContext
-    @Binding var tips: [Tip]
+    @Bindable var delivery: Delivery
     
     var body: some View {
         Section("Tips") {
-            ForEach($tips) { $tip in
+            ForEach($delivery.tips) { tip in
                 HStack {
-                    CurrencyInput(amount: $tip.amount)
+                    CurrencyInput(amount: tip.amount)
                     
-                    Picker("Type", selection: $tip.type) {
+                    Picker("Type", selection: tip.type) {
                         ForEach(Tip.TipType.allCases) { type in
                             Text(type.rawValue.capitalized).tag(type)
                         }
@@ -29,11 +29,21 @@ struct TipsSection: View {
     }
     
     func addTip() {
-        tips.append(Tip(amount: 0.0))
+        delivery.tips.append(Tip(amount: 0.0))
     }
 }
 
 #Preview {
-    let tips: [Tip] = []
-    TipsSection(tips: .constant(tips))
+    do {
+        let previewer = try Previewer()
+
+        return Form {
+            TipsSection(
+                delivery: previewer.delivery
+            )
+        }
+        .modelContainer(previewer.modelContainer)
+    } catch {
+        return Text("Failed to create preview: \(error.localizedDescription)")
+    }
 }

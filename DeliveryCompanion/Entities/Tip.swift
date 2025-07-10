@@ -9,19 +9,20 @@ import Foundation
 import SwiftData
 
 @Model
-class Tip {
+class Tip: Identifiable {
+    var id: UUID = UUID()
+    var delivery: Delivery?
     var amount: Decimal = 0
     var type: TipType?
-    var delivery: Delivery?
     
     enum TipType: String, CaseIterable, Codable, Identifiable {
         case cash, card, other
         var id: String { self.rawValue }
     }
     
-    init(amount: Decimal, type: TipType? = nil, delivery: Delivery? = nil) {
+    init(delivery: Delivery? = nil, amount: Decimal, type: TipType? = nil) {
+        self.delivery = delivery
         self.amount = amount
         self.type = type
-        self.delivery = delivery
     }
 }

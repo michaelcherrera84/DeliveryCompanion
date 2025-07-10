@@ -12,12 +12,12 @@ import SwiftData
 class Delivery {
     var date: Date = Date()
     var service: Service?
-    var servicePayment: Decimal?
+    var servicePayment: ServicePayment?
     var tips: [Tip] = []
     var address: Address?
-    var notes: String?
+    var notes: String = ""
     
-    init(date: Date, service: Service? = nil, servicePayment: Decimal? = nil, tips: [Tip], address: Address? = nil, notes: String? = nil) {
+    init(date: Date, service: Service? = nil, servicePayment: ServicePayment? = nil, tips: [Tip], address: Address? = nil, notes: String) {
         self.date = date
         self.service = service
         self.servicePayment = servicePayment

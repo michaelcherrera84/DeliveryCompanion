@@ -1,15 +1,15 @@
 //
-//  OtherPayment.swift
+//  ShiftServicePayment.swift
 //  DeliveryCompanion
 //
-//  Created by Michael C. Herrera on 7/8/25.
+//  Created by Michael C. Herrera on 7/9/25.
 //
 
 import Foundation
 import SwiftData
 
 @Model
-class OtherPayment {
+class ShiftServicePayment {
     var shift: Shift?
     var amount: Decimal = 0
     var service: Service?

@@ -11,18 +11,18 @@ import SwiftData
 @Model
 class Shift {
     var date: Date = Date()
-    var servicePayments: [ServicePayment] = []
-    var tips: [ShiftTips] = []
-    var otherPayments: [OtherPayment] = []
-    var deductions: [Deduction] = []
-    var miles: Double?
-    var mpg: Double?
-    var gasCost: Decimal?
-    var hours: Double?
+    var shiftServicePayments: [ShiftServicePayment]? = [ShiftServicePayment]()
+    var tips: [ShiftTips]? = [ShiftTips]()
+    var otherPayments: [OtherPayment]? = [OtherPayment]()
+    var deductions: [Deduction]? = [Deduction]()
+    var miles: Double = 0.0
+    var mpg: Double = 0.0
+    var gasCost: Decimal = 0.0
+    var hours: Double = 0.0
     
-    init(date: Date, servicePayments: [ServicePayment], tips: [ShiftTips], otherPayments: [OtherPayment], deductions: [Deduction], miles: Double? = nil, mpg: Double? = nil, gasCost: Decimal? = nil, hours: Double? = nil) {
+    init(date: Date, shiftServicePayments: [ShiftServicePayment]? = nil, tips: [ShiftTips]? = nil, otherPayments: [OtherPayment]? = nil, deductions: [Deduction]? = nil, miles: Double, mpg: Double, gasCost: Decimal, hours: Double) {
         self.date = date
-        self.servicePayments = servicePayments
+        self.shiftServicePayments = shiftServicePayments
         self.tips = tips
         self.otherPayments = otherPayments
         self.deductions = deductions

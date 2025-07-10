@@ -11,38 +11,66 @@ import SwiftUI
 struct AddDelivery: View {
     @Environment(\.modelContext) var modelContext
     @Binding var navigationPath: NavigationPath
-    @State private var date: Date = Date()
-    @State private var service: Service?
-    @State private var servicePayment: ServicePayment?
-    @State private var tips: [Tip] = []
-    @State private var address: Address?
-    @State private var notes: String?
+    @Bindable var delivery: Delivery
 
     var body: some View {
         Form {
             Section {
                 DatePicker(
                     "Date",
-                    selection: $date,
+                    selection: $delivery.date,
                     displayedComponents: [.date, .hourAndMinute]
                 )
             }
             
-            ServiceSection(service: $service, servicePayment: $servicePayment)
+            ServiceSection(delivery: delivery)
+
+            TipsSection(delivery: delivery)
+
+            Section {
+                Button("Add an Address", action: addAddress)
+            }
             
-            TipsSection(tips: $tips)
+            Section("Notes") {
+                TextField("", text: $delivery.notes, axis: .vertical)
+                    .frame(minHeight: 100, alignment: .top)
+            }
         }
         .navigationTitle("Add Delivery")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(for: Address.self) { address in
+            AddAddress(address: address)
+        }
+    }
+
+    func addAddress() {
+        let address = Address(
+            deliveries: [],
+            neighborhood: "",
+            num: "",
+            street1: "",
+            street2: "",
+            city: "",
+            state: "",
+            zip: "",
+            latitude: 0.0,
+            longitude: 0.0
+        )
+        modelContext.insert(address)
+        delivery.address = address
+        navigationPath.append(address)
     }
 }
 
 #Preview {
     do {
         let previewer = try Previewer()
-        
-        return AddDelivery(navigationPath: .constant(NavigationPath()))
-            .modelContainer(previewer.modelContainer)
+
+        return AddDelivery(
+            navigationPath: .constant(NavigationPath()),
+            delivery: previewer.delivery
+        )
+        .modelContainer(previewer.modelContainer)
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }
