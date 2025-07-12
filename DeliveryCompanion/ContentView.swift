@@ -16,13 +16,15 @@ struct ContentView: View {
     @Query var addresses: [Address]
 
     var body: some View {
+
         NavigationStack(path: $path) {
             VStack {
-                VStack {
-
+                List {
+                    Label("Services", systemImage: "list.bullet")
                     ForEach(services) { service in
-                        Text(service.name)
-                            .padding()
+                        NavigationLink(value: service) {
+                            Text(service.name)
+                        }
                     }
 
                     Button(
@@ -30,18 +32,26 @@ struct ContentView: View {
                         systemImage: "plus",
                         action: addService
                     )
-                    .navigationDestination(for: Service.self) { service in
-                        AddEditService(navigationPath: $path, service: service)
-                    }
+                }
+                .navigationDestination(for: Service.self) { service in
+                    AddEditService(navigationPath: $path, service: service)
+                }
 
+                List {
+                    Label("Deliveries", systemImage: "list.bullet")
                     ForEach(deliveries) { delivery in
                         HStack {
-                            Text(
-                                String(
-                                    describing: delivery.servicePayment?.amount
+                            if let amount = delivery.servicePayment?.amount {
+                                Text(
+                                    "Payment: $\(String(describing: amount))"
                                 )
-                            )
-                            Text(delivery.address?.num ?? "")
+                            }
+                            if let num = delivery.address?.num,
+                                let address = delivery.address?.street1
+                            {
+                                Text("Address: \(num)")
+                                Text(address)
+                            }
                         }
                     }
 
@@ -50,17 +60,29 @@ struct ContentView: View {
                         systemImage: "plus",
                         action: addDelivery
                     )
-                    .navigationDestination(for: Delivery.self) { delivery in
-                        AddDelivery(navigationPath: $path, delivery: delivery)
-                    }
-                    
+                }
+                .navigationDestination(for: Delivery.self) { delivery in
+                    AddDelivery(navigationPath: $path, delivery: delivery)
+                }
+
+                List {
+                    Label("Addresses", systemImage: "list.bullet")
                     ForEach(addresses) { address in
-                        Text(address.num)
+                        HStack {
+                            Text(address.num)
+                            Text(address.street1)
+                            Text(address.city)
+                            Text(address.state)
+                            Text(address.zip)
+                            Text("\(address.deliveries?.count ?? 0)")
+                            Text("\(addresses.count)")
+                        }
                     }
                 }
             }
         }
     }
+
 
     func addService() {
         let service = Service(name: "", phoneNumber: "", email: "")

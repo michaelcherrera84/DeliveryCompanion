@@ -10,7 +10,6 @@ import SwiftData
 
 @Model
 class Tip: Identifiable {
-    var id: UUID = UUID()
     var delivery: Delivery?
     var amount: Decimal = 0
     var type: TipType?

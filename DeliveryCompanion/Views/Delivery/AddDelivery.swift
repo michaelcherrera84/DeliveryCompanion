@@ -22,7 +22,7 @@ struct AddDelivery: View {
                     displayedComponents: [.date, .hourAndMinute]
                 )
             }
-            
+
             ServiceSection(delivery: delivery)
 
             TipsSection(delivery: delivery)
@@ -30,7 +30,7 @@ struct AddDelivery: View {
             Section {
                 Button("Add an Address", action: addAddress)
             }
-            
+
             Section("Notes") {
                 TextField("", text: $delivery.notes, axis: .vertical)
                     .frame(minHeight: 100, alignment: .top)
@@ -39,11 +39,21 @@ struct AddDelivery: View {
         .navigationTitle("Add Delivery")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: Address.self) { address in
-            AddAddress(address: address)
+            AddAddress(address: address, delivery: .constant(delivery))
         }
     }
 
+    /// Creates a temporary `Address` instance for user input and navigates to the address form view.
+    ///
+    /// This function is typically called when the user taps "Add Address." It prepares an empty
+    /// `Address` object, without persisting it, and pushes it onto the navigation stack.
+    /// The address is filled out by the user in the destination view, and later validated or saved.
+    ///
+    /// Note: The address is not inserted into the `ModelContext` at this point —
+    /// it remains in-memory until explicitly saved later.
     func addAddress() {
+
+        // Create a new in-memory Address instance with empty/default values
         let address = Address(
             deliveries: [],
             neighborhood: "",
@@ -56,8 +66,9 @@ struct AddDelivery: View {
             latitude: 0.0,
             longitude: 0.0
         )
-        modelContext.insert(address)
-        delivery.address = address
+
+        // Push the new Address object onto the navigation stack
+        // The view associated with Address.self will render next
         navigationPath.append(address)
     }
 }
